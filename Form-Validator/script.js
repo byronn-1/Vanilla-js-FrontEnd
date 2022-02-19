@@ -19,26 +19,57 @@ function showSuccess(input) {
 }
 
 //Regex for valid Email
-function isValidEmail(email) {
+function checkEmail(input) {
   var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(email)
-    .toLowerCase())
+
+  if (re.test(input.value.trim())) {
+    showSuccess(input);
+
+  } else {
+    showError(input, 'Email is not valid')
+  }
 }
+
+//Check all fields 
+function checkRequired(inputArr) {
+  inputArr.forEach(function (input) {
+    if (input.value.trim() === '') {
+      showError(input, `${input.id} is required`);
+    } else {
+      showSuccess(input);
+    }
+  });
+}
+
+//Check input length on given input
+function checkLength(input, min, max) {
+  if (input.value.length < min) {
+    showError(input, `${getFieldName(input)} must be atleast ${min} characters`)
+  } else if (input.value.length > max) {
+    showError(input, `${getFieldName(input)} must be less than ${max} characters`)
+  }
+}
+
+//Check passowords match
+function checkPasswordsMatch(input1, input2) {
+  if (input1.value !== input2.value) {
+    showError(input2, `Passwords do not match`)
+  }
+}
+
+//Get fieldname
+function getFieldName(input) {
+  return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
 form.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  if (username.value === '') {
-    showError(username, 'Username is required');
-  } else {
-    showSuccess(username)
-  }
-  if (email.value === '') {
-    showError(email, 'email is required');
-  } else if (!isValidEmail(email, value)) {
-    showError(email, 'Email is not valid');
-  } else {
-    showSuccess(email)
-  }
+  checkRequired([username, email, password, password2]);
+  checkLength(username, 3, 15);
+  checkLength(password, 6, 25);
+  checkEmail(email)
+  checkPasswordsMatch(password, password2)
 })
 
-
+/* what we do here in the addEventListener is pass an array of the elements we want to check as an argument into the check required function. This prevents us having to do a thousand if statements in the event listener or call individual checking functions that are outside the event listener repeatedly.*/
