@@ -1,0 +1,1 @@
+In this project I have created a dropdown menu that has an animated hamburger feature. The main part of this mini-project was to investigate how to create an elegant solution to closing the menu when clicking on any where else on the page.
