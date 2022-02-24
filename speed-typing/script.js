@@ -122,7 +122,7 @@ settingBtn.addEventListener('click', () =>
 
 //Settings select 
 settingForm.addEventListener('change', e => {
-  difficulty = e.target.value;
+  // difficulty = e.target.value;
   console.log(difficulty);
   localStorage.setItem('difficulty', difficulty)
 })
