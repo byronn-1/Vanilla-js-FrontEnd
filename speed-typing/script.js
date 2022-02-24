@@ -35,6 +35,13 @@ const words = [
 let randomWord;
 let score = 0;
 let time = 10;
+//set difficulty level to local storage value if there isn't one initialise it to medium. This will set the value but it wont set the text in the dropdown- if it was just the below snippet you could select it but hte dropdown would revert back to the initial value
+let difficulty = localStorage.getItem('difficulty') !== null ?
+  localStorage.getItem('difficulty') : 'medium';
+
+//Set difficulty to selected value
+difficultySelect.value = localStorage.getItem('difficulty') !== null ?
+  localStorage.getItem('difficulty') : 'medium';
 
 //Focus on text on start
 text.focus();
@@ -96,8 +103,26 @@ text.addEventListener('input', e => {
     //Clear
     e.target.value = "";
 
-    time += 5;
+    if (difficulty === 'hard') {
+      time += 2;
+    } else if (difficulty === 'medium') {
+      time += 3;
+    } else if (difficulty === 'easy') {
+      time += 5;
+    }
 
     updateTime();
   }
+});
+
+//Settings btn Click
+settingBtn.addEventListener('click', () =>
+
+  settings.classList('hide'));
+
+//Settings select 
+settingForm.addEventListener('change', e => {
+  difficulty = e.target.value;
+  console.log(difficulty);
+  localStorage.setItem('difficulty', difficulty)
 })
