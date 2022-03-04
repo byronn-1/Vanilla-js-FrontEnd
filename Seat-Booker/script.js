@@ -4,10 +4,15 @@ const count = document.getElementById('count');
 const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
 
+populateUI();
+
 //initialise variables
 let ticketPrice = +movieSelect.value;
 
-
+function setMovieData(movieIndex, moviePrice) {
+  localStorage.setItem('selectedMovieIndex', movieIndex);
+  localStorage.setItem('selectedMovieIndex', moviePrice);
+}
 //Update total and count
 function updateSelectedCount() {
   const selectedSeats = document.querySelectorAll('.row .seat.selected');
@@ -16,11 +21,39 @@ function updateSelectedCount() {
   count.innerText = selectedSeatsCount;
   total.innerText = selectedSeatsCount * ticketPrice;
 }
+// Get Data from local storage and populate UI
+function populateUI() {
+  const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
 
+  if (selectedSeats !== null && selectedSeats.length > 0) {
+    seats.forEach((seat, index) => {
+      if (selectedSeats.indexOf(index) > -1) {
+        seat.classList.add('selected')
+      }
+    });
+  }
+
+  const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+
+  if (selectedMovieIndex !== null) {
+    movieSelect.selectedIndex = selectedMovieIndex;
+  }
+}
+//copy the selected seats into an array
+// Map through the array
+//return an new array of indexes
+//remember map is similar to foreach but map returns an array
+const seatsIndex = [...selectedSeats].map((seat) => {
+  return [...seats].indexOf(seat)
+})
+// so here we save the previously constructed array to local storage
+//remember we have to stringify the array because local storage takes key value pairs
+localStorage.setItem('seletedSeats', JSON.stringify(seatsIndex))
 
 //Movie select event
 movieSelect.addEventListener('change', e => {
   ticketPrice = +e.target.value;
+  setMovieData(e.target.selectedIndex, e.target.value)
   updateSelectedCount();
 })
 //Seat click event
@@ -29,4 +62,7 @@ container.addEventListener('click', (e) => {
     e.target.classList.toggle('selected');
     updateSelectedCount();
   }
-})
+});
+
+//Initial count and total set 
+updateSelectedCount();
