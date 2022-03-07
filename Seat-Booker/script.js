@@ -48,7 +48,7 @@ const seatsIndex = [...selectedSeats].map((seat) => {
 })
 // so here we save the previously constructed array to local storage
 //remember we have to stringify the array because local storage takes key value pairs
-localStorage.setItem('seletedSeats', JSON.stringify(seatsIndex))
+localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex))
 
 //Movie select event
 movieSelect.addEventListener('change', e => {
